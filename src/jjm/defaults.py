@@ -1,0 +1,5 @@
+IN_DIR_NAME = "in"
+OUT_DIR_NAME = "out"
+LANG = "python3"
+FIRST_IN_FILE = "in1.toml"
+FIRST_OUT_FILE = "out1.toml"
