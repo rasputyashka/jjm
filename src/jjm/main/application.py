@@ -4,28 +4,27 @@ import argparse
 import logging
 import os
 import typing
+import subprocess
 
 from jjm.main import options
-from jjm.defaults import (
-    FIRST_IN_FILE,
-    FIRST_OUT_FILE,
-    IN_DIR_NAME,
-    OUT_DIR_NAME,
-)
-from jjm.options.parse_args import parse_args
+from jjm.defaults import FIRST_IN_FILE, TEST_CASES_DIR, OUT_DIR
+
+import toml
 
 LOGGER = logging.getLogger(__name__)
 
 
 class Application:
     def __init__(self):
-        pass
+        self.pwd = os.path.abspath(".")
 
     def initialize(self, argv: typing.Sequence[str]):
         self.initializer = Initializer()
         self.tester = Tester()
         self.parser = options.register_default_options(
-            self.initializer.initialize, self.tester.run_tests
+            self.initializer.initialize,
+            self.tester.generate_results,
+            self.tester.run_tests,
         )
         self.parser.parse_args(argv)
 
@@ -43,9 +42,55 @@ class Application:
 
 
 class Tester:
-    def run_tests(self, args: argparse.Namespace):
+    def generate_results(self, args: argparse.Namespace):
+        # TODO refactor this stuff
+        """
 
-        pass
+        Parameters
+        ----------
+        args : argparse.Namespace
+            _description_
+        """
+        dirname = args.dirname
+        executable = args.program_file
+        path = os.path.join(os.path.abspath("."), dirname, TEST_CASES_DIR)
+        for case_file in os.listdir(path):
+            case_data = toml.load(os.path.join(path, case_file))
+            in_data = case_data["main"]["in"]
+            # out_data = case_data["main"]["out"]
+            with open(
+                os.path.join(
+                    os.path.abspath("."),
+                    dirname,
+                    OUT_DIR,
+                    case_file.removesuffix(".toml"),
+                ),
+                "w",
+            ) as out_file:
+                subprocess.run(
+                    ["python3", executable],
+                    stdout=out_file,
+                    timeout=10,
+                    input=in_data,
+                    text=True,
+                )
+
+    def run_tests(self, args: argparse.Namespace):
+        dirname = args.dirname
+        pwd = os.path.abspath(".")
+        out_path = os.path.join(pwd, dirname, OUT_DIR)
+        cases_dir = os.path.join(pwd, dirname, TEST_CASES_DIR)
+        for case_file in os.listdir(cases_dir):
+            case_data = toml.load(os.path.join(cases_dir, case_file))
+            case_out = case_data["main"]["out"]
+            with open(
+                os.path.join(out_path, case_file.removesuffix(".toml"))
+            ) as out_file:
+                out_read = out_file.read().rstrip()  # trailing '\n'
+                assert case_out == out_read, {"in": case_out, "out": out_read}
+
+        LOGGER.info("Everything is OK")
+        print("OK")
 
 
 class Initializer:
@@ -61,10 +106,7 @@ class Initializer:
             args (_type_): _description_
         """
         dirname = args.dirname
-        lang = args.lang
-
         self._prepare_folders(dirname)
-        self._prepare_files(dirname, lang)
 
     def _prepare_folders(self, dirname):
         """Creating tests directory.
@@ -73,21 +115,9 @@ class Initializer:
         Args:
             dirname (str): directory name to be crated
         """
-        in_dir_path = os.path.join(self.pwd, dirname, IN_DIR_NAME)
-        out_dir_path = os.path.join(self.pwd, dirname, OUT_DIR_NAME)
+        in_dir_path = os.path.join(self.pwd, dirname, TEST_CASES_DIR)
+        out_dir_path = os.path.join(self.pwd, dirname, OUT_DIR)
 
         os.mkdir(dirname)
         os.mkdir(in_dir_path)
         os.mkdir(out_dir_path)
-
-    def _prepare_files(self, dirname, lang):
-
-        in_dir_path = os.path.join(self.pwd, dirname, IN_DIR_NAME)
-        out_dir_path = os.path.join(self.pwd, dirname, OUT_DIR_NAME)
-
-        # TODO remove harcoded constants -> add them to parser arguments
-        with open(os.path.join(in_dir_path, FIRST_IN_FILE), "w") as in_file:
-            in_file.write("[in]\n")
-
-        with open(os.path.join(out_dir_path, FIRST_OUT_FILE), "w") as out_file:
-            out_file.write(f"[out]\n[metadata]\n\tlanguage={lang}")
