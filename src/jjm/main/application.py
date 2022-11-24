@@ -8,6 +8,7 @@ import subprocess
 
 from jjm.main import options
 from jjm.defaults import TEST_CASES_DIR, OUT_DIR
+from jjm.utils import get_warn_color, get_fail_color, get_success_color
 
 import toml
 
@@ -88,10 +89,13 @@ class Tester:
                 os.path.join(out_path, case_file.removesuffix(".toml"))
             ) as out_file:
                 out_read = out_file.read().rstrip()  # trailing '\n'
-                assert case_out == out_read, {"in": case_out, "out": out_read}
+                if case_out == out_read:
+                    print(f"{case_file} - {get_success_color('OK')}")
+                else:
+                    print(f"{case_file} - {get_fail_color('FAILED')}")
+                    print(f"Expected: {case_out!r}\nGot {out_read!r}")
 
         LOGGER.info("Everything is OK")
-        print("OK")
 
 
 class Initializer:
