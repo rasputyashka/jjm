@@ -7,7 +7,7 @@ import typing
 import subprocess
 
 from jjm.main import options
-from jjm.defaults import FIRST_IN_FILE, TEST_CASES_DIR, OUT_DIR
+from jjm.defaults import TEST_CASES_DIR, OUT_DIR
 
 import toml
 
@@ -38,7 +38,8 @@ class Application:
     def _run(self, argv: typing.Sequence[str]):
         self.initialize(argv)
         args = self.parser.parse_args(argv)
-        args.func(args)
+        if "func" in args:
+            args.func(args)
 
 
 class Tester:
