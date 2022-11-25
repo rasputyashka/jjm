@@ -1,8 +1,8 @@
-"""cli implementation of jjm"""
+"""cli implementation of jjm."""
 from __future__ import annotations
 
-import typing
 import sys
+import typing
 
 from jjm.main.application import Application
 

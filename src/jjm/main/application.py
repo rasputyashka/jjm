@@ -3,14 +3,14 @@ from __future__ import annotations
 import argparse
 import logging
 import os
-import typing
 import subprocess
-
-from jjm.main import options
-from jjm.defaults import TEST_CASES_DIR, OUT_DIR
-from jjm.utils import get_warn_color, get_fail_color, get_success_color
+import typing
 
 import toml
+
+from jjm.defaults import OUT_DIR, TEST_CASES_DIR
+from jjm.main import options
+from jjm.utils import get_fail_color, get_success_color
 
 LOGGER = logging.getLogger(__name__)
 
@@ -39,6 +39,8 @@ class Application:
     def _run(self, argv: typing.Sequence[str]):
         self.initialize(argv)
         args = self.parser.parse_args(argv)
+        # func is a default function that executes on
+        # jjm some_command. jjm sample does need a function for instance.
         if "func" in args:
             args.func(args)
 
@@ -46,20 +48,11 @@ class Application:
 class Tester:
     def generate_results(self, args: argparse.Namespace):
         # TODO refactor this stuff
-        """
-
-        Parameters
-        ----------
-        args : argparse.Namespace
-            _description_
-        """
+        """Run all the test cases and save their results to out directory."""
         dirname = args.dirname
-        executable = args.program_file
         path = os.path.join(os.path.abspath("."), dirname, TEST_CASES_DIR)
         for case_file in os.listdir(path):
             case_data = toml.load(os.path.join(path, case_file))
-            in_data = case_data["main"]["in"]
-            # out_data = case_data["main"]["out"]
             with open(
                 os.path.join(
                     os.path.abspath("."),
@@ -70,10 +63,10 @@ class Tester:
                 "w",
             ) as out_file:
                 subprocess.run(
-                    ["python3", executable],
+                    ["python3", args.program_file],
                     stdout=out_file,
                     timeout=10,
-                    input=in_data,
+                    input=case_data["main"]["in"],
                     text=True,
                 )
 
@@ -105,11 +98,7 @@ class Initializer:
         self.pwd = os.path.abspath(".")
 
     def initialize(self, args: argparse.Namespace):
-        """the main function of this class called by parser.
-
-        Args:
-            args (_type_): _description_
-        """
+        """The main function of this class called by parser."""
         dirname = args.dirname
         self._prepare_folders(dirname)
 
