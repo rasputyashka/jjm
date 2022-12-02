@@ -29,7 +29,7 @@ options:
 `sample` prints basic sample for a test_case file
 ```
 $ jjm sample
-#  this is the MRE of case_file
+#  this is the example of case_file
 #  the extension of file must be .toml
 [main]
 in = ""
@@ -38,7 +38,7 @@ out = ""
 ```
 
 ## Installing
-I haven't added jjm to pypi, so you can install it via `pip install .` or `pipx install .` which i prefer for other CLI:
+I haven't added jjm to PyPI yet, so you can install it via `pip` or `pipx` which i prefer for other CLIs:
 ```sh
 git clone https://github.com/rasputyashka/jjm.git jjm
 cd jjm
