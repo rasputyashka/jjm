@@ -3,7 +3,7 @@
 ### About
 `jjm` is a cli that allows you make your own test samples and run the given tests.
 
-### Some details for current version (0.1.0)
+### Some details for current version (0.1.1)
 The commands are:
 ```
 $ jjm --help
