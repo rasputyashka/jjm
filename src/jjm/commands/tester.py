@@ -18,14 +18,18 @@ class Tester:
         case_data = toml.load(in_file)
         in_data = case_data["main"]["in"]
         max_time = case_data["main"].get("time") or 5
-        with open(out_file, "w") as to_file:
-            subprocess.run(
-                ["python3", executable],
-                stdout=to_file,
-                timeout=max_time,
-                input=in_data,
-                text=True,
-            )
+        try:
+            with open(out_file, "w") as to_file:
+                subprocess.run(
+                    ["python3", executable],
+                    stdout=to_file,
+                    timeout=max_time,
+                    input=in_data,
+                    text=True,
+                )
+        except subprocess.TimeoutExpired:
+            with open(out_file, "w") as to_file:
+                to_file.write("TLE")
 
     def generate_results(self, args: argparse.Namespace):
         """Run all the test cases and save their results to out directory."""
@@ -60,6 +64,8 @@ class Tester:
                 out_read = out_file.read().rstrip()  # trailing '\n'
                 if case_out == out_read:
                     print(f"{case_file} - {get_success_color('AC')}")
+                elif out_read == "TLE":
+                    print(f"{case_file} - {get_fail_color('TLE')}")
                 else:
                     print(f"{case_file} - {get_fail_color('WA')}")
                     print(f"Expected: {case_out!r}\nGot {out_read!r}")
