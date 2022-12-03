@@ -13,7 +13,7 @@ positional arguments:
   {init,run,test,sample}
     init                Make a case_folder for a problem.
     run                 Run the code with given test cases and write the result to out folder.
-    test                Check whether test case's out equals to the program's out.
+    test                executes run command and compares outputs
     sample              Shows the sample of the test case file.
 
 options:
