@@ -1,7 +1,7 @@
 # Local Jujment
 
 ### About
-`jjm` is a cli that allows you make your own test samples and run the given tests. 
+`jjm` is a cli that allows you make your own test samples and run the given tests.
 
 ### Some details for current version (0.1.0)
 The commands are:
@@ -30,11 +30,10 @@ options:
 ```
 $ jjm sample
 #  this is the example of case_file
-#  the extension of file must be .toml
+#  .toml format
 [main]
 in = ""
-out = ""
-
+out = "?"  # output is not specified
 ```
 
 ## Installing

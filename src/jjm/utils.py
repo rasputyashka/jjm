@@ -3,19 +3,11 @@ from __future__ import annotations
 import argparse
 import enum
 
-__all__ = [
-    "SAMPLE_TEXT",
-    "COLORS",
-    "get_warn_color",
-    "get_success_color",
-    "get_fail_color",
-]
-
-SAMPLE_TEXT = """#  this is the MRE of case_file
-#  the extension of file must be .toml
+SAMPLE_TEXT = """#  this is the example of case_file
+#  .toml format
 [main]
 in = ""
-out = ""
+out = "?"  # output may not be specified - "?"
 """
 
 
