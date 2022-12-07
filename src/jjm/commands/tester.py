@@ -14,6 +14,9 @@ LOGGER = logging.getLogger(__name__)
 
 
 class Tester:
+    def __init__(self, pwd):
+        self.pwd = pwd
+
     def process_file(self, in_file, out_file, executable):
         case_data = toml.load(in_file)
         in_data = case_data["main"]["in"]
@@ -29,6 +32,7 @@ class Tester:
                 )
         except subprocess.TimeoutExpired:
             with open(out_file, "w") as to_file:
+                #  This rewrites the log
                 to_file.write("TLE")
 
     def generate_results(self, args: argparse.Namespace):
@@ -48,9 +52,8 @@ class Tester:
         # `jjm test` has source and directory paramters
         self.generate_results(args)
         dirname = args.directory
-        pwd = os.path.abspath(".")
-        out_path = os.path.join(pwd, dirname, OUT_DIR)
-        cases_dir = os.path.join(pwd, dirname, TEST_CASES_DIR)
+        out_path = os.path.join(self.pwd, dirname, OUT_DIR)
+        cases_dir = os.path.join(self.pwd, dirname, TEST_CASES_DIR)
         for case_file in os.listdir(cases_dir):
             case_data = toml.load(os.path.join(cases_dir, case_file))
             case_out = case_data["main"]["out"]

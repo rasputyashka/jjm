@@ -7,8 +7,8 @@ from jjm.defaults import OUT_DIR, TEST_CASES_DIR
 class Initializer:
     """The class that contains everything that is needed for jjm init."""
 
-    def __init__(self):
-        self.pwd = os.path.abspath(".")
+    def __init__(self, pwd):
+        self.pwd = pwd
 
     def initialize(self, args: argparse.Namespace):
         """The main function of this class called by parser."""

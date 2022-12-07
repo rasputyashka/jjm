@@ -7,6 +7,7 @@ import typing
 from jjm.main import options
 from jjm.commands.initializer import Initializer
 from jjm.commands.tester import Tester
+from jjm.commands.file_generator import InputCaseGenerator
 
 LOGGER = logging.getLogger(__name__)
 
@@ -16,12 +17,14 @@ class Application:
         self.pwd = os.path.abspath(".")
 
     def initialize(self, argv: typing.Sequence[str]):
-        self.initializer = Initializer()
-        self.tester = Tester()
+        self.initializer = Initializer(self.pwd)
+        self.tester = Tester(self.pwd)
+        self.generator = InputCaseGenerator(self.pwd)
         self.parser = options.prepare_main_parser(
             self.initializer.initialize,
             self.tester.generate_results,
             self.tester.run_tests,
+            self.generator.make_files,
         )
         self.parser.parse_args(argv)
 
