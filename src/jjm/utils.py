@@ -23,7 +23,7 @@ def display_sample(_: argparse.Namespace) -> None:
 
 
 def get_warn_color(text) -> str:
-    return f"{COLORS.WARNING.value} {text} {COLORS.ENDC.value}"
+    return f"{COLORS.WARNING.value}{text}{COLORS.ENDC.value}"
 
 
 def get_success_color(text) -> str:

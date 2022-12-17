@@ -1,15 +1,12 @@
 from __future__ import annotations
 
-import logging
 import os
 import typing
 
-from jjm.main import options
+from jjm.commands.file_generator import InputCaseGenerator
 from jjm.commands.initializer import Initializer
 from jjm.commands.tester import Tester
-from jjm.commands.file_generator import InputCaseGenerator
-
-LOGGER = logging.getLogger(__name__)
+from jjm.main import options
 
 
 class Application:
@@ -32,8 +29,7 @@ class Application:
         try:
             self._run(argv)
         except KeyboardInterrupt as exc:
-            LOGGER.critical("Caught keyboard interrupt")
-            LOGGER.exception(exc)
+            print("Keyboard interrupt")
 
     def _run(self, argv: typing.Sequence[str]):
         self.initialize(argv)
