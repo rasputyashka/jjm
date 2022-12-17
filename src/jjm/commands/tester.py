@@ -63,7 +63,7 @@ class Tester:
             ) as out_file:
                 out_read = str(out_file.read().rstrip())  # trailing '\n'
                 if case_out == out_read:
-                    print(f"{cse_fiale} - {get_success_color('AC')}")
+                    print(f"{case_file} - {get_success_color('AC')}")
                 elif out_read == "TLE":
                     print(f"{case_file} - {get_fail_color('TLE')}")
                 else:
