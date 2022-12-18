@@ -69,6 +69,8 @@ def _configure_init_parser(
         help="Name of a problem",
     )
 
+    init_parser.add_argument("filenames", nargs="*")
+
     init_parser.set_defaults(func=default_function)
 
 
@@ -120,7 +122,13 @@ def _configure_gen_in_parser(
         + "`jjm sample` in `cases` directory.",
     )
 
-    gen_in_parser.add_argument("dirname", help="The directory of a problem.")
+    gen_in_parser.add_argument(
+        "-d",
+        "--directory",
+        help="The project directory. Default is '.'",
+        required=False,
+        default=".",
+    )
     gen_in_parser.add_argument(
         "filenames",
         nargs="+",

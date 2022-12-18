@@ -2,6 +2,7 @@ import argparse
 import os
 
 from jjm.defaults import OUT_DIR, TEST_CASES_DIR
+from jjm.commands.file_generator import make_files
 
 
 class Initializer:
@@ -14,6 +15,7 @@ class Initializer:
         """The main function of this class called by parser."""
         dirname = args.dirname
         self._prepare_folders(dirname)
+        make_files(args)
 
     def _prepare_folders(self, dirname):
         """Create tests directory.
