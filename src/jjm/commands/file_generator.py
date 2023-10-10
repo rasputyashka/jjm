@@ -8,7 +8,7 @@ from jjm.utils import SAMPLE_TEXT
 
 
 def make_files(args: argparse.Namespace):
-    dirname = args.dirname
+    dirname = args.directory
     filenames = args.filenames
     for filename in filenames:
         with open(

@@ -65,7 +65,7 @@ def _configure_init_parser(
         help="Make a case_directory for a problem.",
     )
     init_parser.add_argument(
-        "dirname",
+        "directory",
         help="Name of a problem",
     )
 

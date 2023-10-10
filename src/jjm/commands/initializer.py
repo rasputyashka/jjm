@@ -13,7 +13,7 @@ class Initializer:
 
     def initialize(self, args: argparse.Namespace):
         """The main function of this class called by parser."""
-        dirname = args.dirname
+        dirname = args.directory
         self._prepare_folders(dirname)
         make_files(args)
 
