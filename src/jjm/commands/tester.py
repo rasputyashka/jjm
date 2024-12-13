@@ -64,7 +64,7 @@ class Tester:
                 run_result = out_file.read().rstrip()
                 if correct_result == "?":
                     print(
-                        f"{case_file} - {get_warn_color('Out Not Specified')}"
+                        f"{case_file} - {get_warn_color('Output Not Specified')}"
                     )
                     continue
                 elif correct_result == run_result:
