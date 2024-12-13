@@ -17,8 +17,9 @@ class Tester:
     def process_file(self, in_file, out_file, path_to_source_code):
         case_data = toml.load(in_file)
         in_data = case_data["main"]["in"]
-        max_time = case_data["main"].get("time") or 1  # is id default
-        # TODO document the default for time
+        max_time = case_data["main"].get("time", 1)
+
+        # TODO determine programming language and launch in more unified fashion
         try:
             with open(out_file, "w", encoding="utf-8") as to_file:
                 subprocess.run(
@@ -54,31 +55,31 @@ class Tester:
         cases_dir = os.path.join(self.pwd, dirname, TEST_CASES_DIR)
         for case_file in os.listdir(cases_dir):
             case_data = toml.load(os.path.join(cases_dir, case_file))
-            case_out = case_data["main"]["out"].rstrip()  # trailing '\n'
+            correct_result = case_data["main"]["out"].rstrip()
             with open(
                 os.path.join(out_dir, case_file.removesuffix(".toml")),
                 encoding="utf-8",
                 # user config files must have .toml extenstion
             ) as out_file:
-                out_read = out_file.read().rstrip()  # trailing '\n'
-                if case_out == "?":
+                run_result = out_file.read().rstrip()
+                if correct_result == "?":
                     print(
                         f"{case_file} - {get_warn_color('Out Not Specified')}"
                     )
                     continue
-                elif case_out == out_read:
+                elif correct_result == run_result:
                     print(f"{case_file} - {get_success_color('AC')}")
                     continue
-                elif out_read == "TLE":
+                elif run_result == "TLE":
                     print(f"{case_file} - {get_fail_color('TLE')}")
                     continue
                 else:
                     print(f"{case_file} - {get_fail_color('WA')}")
-                    if "\n" in case_out:
-                        print(f"Expected:\n{case_out}")
+                    if "\n" in correct_result:
+                        print(f"Expected:\n{correct_result}")
                     else:
-                        print(f"{'Expected: ':<10}{case_out}")
-                    if "\n" in out_read:
-                        print(f"Got:\n{out_read}")
+                        print(f"{'Expected: ':<10}{correct_result}")
+                    if "\n" in run_result:
+                        print(f"Got:\n{run_result}")
                     else:
-                        print(f"{'Got: ':<10}{out_read}")
+                        print(f"{'Got: ':<10}{run_result}")

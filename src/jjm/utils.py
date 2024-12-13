@@ -3,11 +3,12 @@ from __future__ import annotations
 import argparse
 import enum
 
-SAMPLE_TEXT = """#  this is the example of case_file
+SAMPLE_TEXT = """#  this is the example of case file
 #  .toml format
 [main]
 in = ""
-out = "?"  # output may not be specified - "?"
+out = "?"  # ? - output is not specified
+time = 1   # TLE timeout. Optional (1 is default)
 """
 
 
