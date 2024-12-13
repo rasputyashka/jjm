@@ -57,7 +57,7 @@ def _configure_init_parser(
 ):
     init_parser = subparsers.add_parser(
         "init",
-        help="create and initializes problem's working directory.",
+        help="create and initialize problem's working directory.",
     )
     init_parser.add_argument(
         "directory",
