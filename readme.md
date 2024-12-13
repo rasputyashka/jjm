@@ -6,16 +6,16 @@
 ### Some details for current version (0.1.2)
 The commands are:
 ```
-$ jjm --help
-usage: jjm [-h] {init,run,test,sample} ...
+$ jjm --help                                                                                     
+usage: jjm [-h] {init,test,gen_in,sample,run} ...
 
 positional arguments:
-  {init,run,test,gen_in,sample}
-    init                Make a case_folder for a problem.
-    run                 Run the code with given test cases and write the result to out folder.
-    test                executes run command and compares outputs
-    gen_in              Generate test case file.
-    sample              Shows the sample of the test case file.
+  {init,test,gen_in,sample,run}
+    init                create and initialize problem's working directory.
+    test                run code and compare answer from test case files with program's results.
+    gen_in              generate test case file(s).
+    sample              show the sample of the test case file.
+    run                 run the code. Results are stored in 'out' folder.
 
 options:
   -h, --help            show this help message and exit
@@ -63,4 +63,5 @@ myinput.toml - Output Not Specified
 wa_example.toml - WA
 Expected: 23
 Got:      24
+# cat out/myinput if you want to see the answer in case you haven't specified it.
 ```
