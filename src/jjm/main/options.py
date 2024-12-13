@@ -9,22 +9,17 @@ from jjm.utils import display_sample
 def prepare_main_parser(
     initializer, runner, tester, generator
 ) -> argparse.ArgumentParser:
-    """Register the default options.
-
-    These options include:
-
-
-    """
-    parser = argparse.ArgumentParser(add_help=False)
+    """Registers the default options."""
+    parser = argparse.ArgumentParser(add_help=True)
 
     subparsers = parser.add_subparsers()
 
-    _configure_test_parser(subparsers, tester)
     _configure_init_parser(subparsers, initializer)
-    _configute_run_parser(subparsers, runner)
+    _configure_test_parser(subparsers, tester)
     _configure_gen_in_parser(subparsers, generator)
     # using 'hardchosen' display_sample function so far
     _configute_info_parser(subparsers, display_sample)
+    _configute_run_parser(subparsers, runner)
 
     return parser
 
@@ -36,21 +31,21 @@ def _configure_test_parser(
 ):
     test_parser = subparsers.add_parser(
         "test",
-        help="Check whether test case's out equals to the program's out.",
+        help="run code and compare answer from test case files with program's results.",
         parents=parents,
     )
 
     test_parser.add_argument(
         "-d",
         "--directory",
-        help="Path to the project directory. Default is '.'",
+        help="path to the project directory. Default is '.'",
         required=False,
         default=".",
     )
 
     test_parser.add_argument(
         "source",
-        help="Path to exexutable file",
+        help="Path to source file",
     )
 
     test_parser.set_defaults(func=default_function)
@@ -62,14 +57,14 @@ def _configure_init_parser(
 ):
     init_parser = subparsers.add_parser(
         "init",
-        help="Make a case_directory for a problem.",
+        help="create and initialize problem's working directory.",
     )
     init_parser.add_argument(
         "directory",
-        help="Name of a problem",
+        help="name of problem's folder.",
     )
 
-    init_parser.add_argument("filenames", nargs="*")
+    init_parser.add_argument("filenames", nargs="*", help='generates sample files.')
 
     init_parser.set_defaults(func=default_function)
 
@@ -80,21 +75,20 @@ def _configute_run_parser(
 ):
     run_parser = subparsers.add_parser(
         "run",
-        help="Run the code with given test cases and write the result "
-        + "to out directory.",
+        help="run the code. Results are stored in 'out' folder."
     )
 
     run_parser.add_argument(
         "-d",
         "--directory",
-        help="The project directory. Default is '.'",
+        help="the project directory. Default is '.'",
         required=False,
         default=".",
     )
 
     run_parser.add_argument(
         "source",
-        help="Path to exexutable file",
+        help="path to executable file",
     )
 
     run_parser.set_defaults(func=default_function)
@@ -106,7 +100,7 @@ def _configute_info_parser(
 ):
     info_parser = subparsers.add_parser(
         "sample",
-        help="Shows the sample of the test case file.",
+        help="show the sample of the test case file.",
     )
 
     info_parser.set_defaults(func=default_function)
@@ -118,14 +112,13 @@ def _configure_gen_in_parser(
 ):
     gen_in_parser = subparsers.add_parser(
         "gen_in",
-        help="Produces files filled with result of "
-        + "`jjm sample` in `cases` directory.",
+        help="generate test case file(s)."
     )
 
     gen_in_parser.add_argument(
         "-d",
         "--directory",
-        help="The project directory. Default is '.'",
+        help="the project directory. Default is '.'",
         required=False,
         default=".",
     )
